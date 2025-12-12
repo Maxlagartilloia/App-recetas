@@ -1,143 +1,87 @@
-/* ==============================
-   DATA
-================================ */
-const recipes = window.RECIPES || [];
+const recipes = window.RECIPES;
 
-/* ==============================
-   ELEMENTS
-================================ */
 const container = document.getElementById("recipesContainer");
 const searchInput = document.getElementById("searchInput");
 const categoryFilter = document.getElementById("categoryFilter");
 const modal = document.getElementById("recipeModal");
 const modalBody = document.getElementById("modalBody");
-const closeModalBtn = document.getElementById("closeModal");
+const closeModal = document.getElementById("closeModal");
 const themeToggle = document.getElementById("themeToggle");
 
-/* ==============================
-   STATE
-================================ */
-let currentRecipes = [...recipes];
-
-/* ==============================
-   INIT
-================================ */
 document.addEventListener("DOMContentLoaded", () => {
   loadTheme();
-  populateCategories();
-  renderRecipes(currentRecipes);
+  loadCategories();
+  render(recipes);
+  openFromHash();
 });
 
-/* ==============================
-   THEME
-================================ */
-function loadTheme() {
-  const savedTheme = localStorage.getItem("theme");
-  if (savedTheme === "dark") {
-    document.body.classList.add("dark");
-    themeToggle.textContent = "☀️";
-  }
-}
-
-themeToggle.addEventListener("click", () => {
-  document.body.classList.toggle("dark");
-  const isDark = document.body.classList.contains("dark");
-  localStorage.setItem("theme", isDark ? "dark" : "light");
-  themeToggle.textContent = isDark ? "☀️" : "🌙";
-});
-
-/* ==============================
-   CATEGORIES
-================================ */
-function populateCategories() {
-  const categories = [...new Set(recipes.map(r => r.category))];
-  categories.forEach(cat => {
-    const option = document.createElement("option");
-    option.value = cat;
-    option.textContent = cat;
-    categoryFilter.appendChild(option);
+function loadCategories(){
+  [...new Set(recipes.map(r=>r.category))].forEach(c=>{
+    const o=document.createElement("option");
+    o.value=c;o.textContent=c;
+    categoryFilter.appendChild(o);
   });
 }
 
-/* ==============================
-   RENDER RECIPES
-================================ */
-function renderRecipes(list) {
-  container.innerHTML = "";
-
-  if (list.length === 0) {
-    container.innerHTML = "<p>No se encontraron recetas.</p>";
-    return;
-  }
-
-  list.forEach(recipe => {
-    const card = document.createElement("div");
-    card.className = "recipe-card";
-    card.innerHTML = `
-      <h3>${recipe.title}</h3>
-      <p class="category">${recipe.category}</p>
+function render(list){
+  container.innerHTML="";
+  list.forEach(r=>{
+    const d=document.createElement("div");
+    d.className="recipe-card";
+    d.innerHTML=`
+      <h3>${r.title}</h3>
+      <p class="category">${r.category}</p>
     `;
-    card.addEventListener("click", () => openModal(recipe));
-    container.appendChild(card);
+    d.onclick=()=>openModal(r);
+    container.appendChild(d);
   });
 }
 
-/* ==============================
-   SEARCH & FILTER
-================================ */
-searchInput.addEventListener("input", applyFilters);
-categoryFilter.addEventListener("change", applyFilters);
+searchInput.oninput=filter;
+categoryFilter.onchange=filter;
 
-function applyFilters() {
-  const search = searchInput.value.toLowerCase();
-  const category = categoryFilter.value;
-
-  currentRecipes = recipes.filter(recipe => {
-    const matchesSearch =
-      recipe.title.toLowerCase().includes(search);
-    const matchesCategory =
-      category === "all" || recipe.category === category;
-    return matchesSearch && matchesCategory;
-  });
-
-  renderRecipes(currentRecipes);
+function filter(){
+  const t=searchInput.value.toLowerCase();
+  const c=categoryFilter.value;
+  render(recipes.filter(r=>
+    r.title.toLowerCase().includes(t) &&
+    (c==="all"||r.category===c)
+  ));
 }
 
-/* ==============================
-   MODAL
-================================ */
-function openModal(recipe) {
-  modalBody.innerHTML = `
-    <h2>${recipe.title}</h2>
-    <p><strong>Categoría:</strong> ${recipe.category}</p>
-    <p><strong>Tiempo:</strong> ${recipe.time}</p>
-    <p><strong>Porciones:</strong> ${recipe.servings}</p>
-
+function openModal(r){
+  location.hash=r.id;
+  modalBody.innerHTML=`
+    <h2>${r.title}</h2>
+    <p><b>Tiempo:</b> ${r.time}</p>
+    <p><b>Porciones:</b> ${r.servings}</p>
     <h4>Ingredientes</h4>
-    <ul>
-      ${recipe.ingredients.map(i => `<li>${i}</li>`).join("")}
-    </ul>
-
+    <ul>${r.ingredients.map(i=>`<li>${i}</li>`).join("")}</ul>
     <h4>Preparación</h4>
-    <ol>
-      ${recipe.steps.map(s => `<li>${s}</li>`).join("")}
-    </ol>
-
-    ${
-      recipe.notes
-        ? `<h4>Notas</h4><p>${recipe.notes}</p>`
-        : ""
-    }
+    <ol>${r.steps.map(s=>`<li>${s}</li>`).join("")}</ol>
+    ${r.notes?`<p><b>Notas:</b> ${r.notes}</p>`:""}
+    <a href="https://wa.me/?text=${encodeURIComponent(r.title)}" target="_blank">📲 Compartir</a>
   `;
-
   modal.classList.remove("hidden");
 }
 
-closeModalBtn.addEventListener("click", closeModal);
-modal.addEventListener("click", e => {
-  if (e.target === modal) closeModal();
-});
+closeModal.onclick=()=>modal.classList.add("hidden");
 
-function closeModal() {
-  modal.classList.add("hidden");
+function loadTheme(){
+  if(localStorage.theme==="dark"){
+    document.body.classList.add("dark");
+    themeToggle.textContent="☀️";
+  }
+}
+
+themeToggle.onclick=()=>{
+  document.body.classList.toggle("dark");
+  localStorage.theme=document.body.classList.contains("dark")?"dark":"light";
+  themeToggle.textContent=document.body.classList.contains("dark")?"☀️":"🌙";
+}
+
+function openFromHash(){
+  const id=location.hash.replace("#","");
+  const r=recipes.find(x=>x.id===id);
+  if(r)openModal(r);
 }
