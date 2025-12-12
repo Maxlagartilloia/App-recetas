@@ -2,43 +2,53 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <title>Recetario Ecuatoriano Digital</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Aplicación digital de recetas tradicionales del Ecuador. Funciona offline." />
+  <title>Recetario Tradicional Ecuatoriano</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="stylesheet" href="styles.css" />
+  <!-- SEO Básico -->
+  <meta name="description" content="Recetario tradicional ecuatoriano con más de 70 recetas auténticas. App web rápida y moderna.">
+  <meta name="author" content="Recetario Premium">
+  <meta name="theme-color" content="#e53935">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="styles.css">
 </head>
-<body>
 
+<body>
+  <!-- HEADER -->
   <header class="app-header">
     <h1>🍲 Recetario Ecuatoriano</h1>
-    <p>Aplicación digital – funciona sin internet</p>
-
-    <input
-      type="search"
-      id="searchInput"
-      placeholder="Buscar receta..."
-      autocomplete="off"
-    />
-
-    <div id="categoryFilters" class="filters"></div>
+    <button id="themeToggle">🌙</button>
   </header>
 
-  <main>
-    <section id="recipesGrid" class="recipes-grid"></section>
-  </main>
+  <!-- SEARCH & FILTER -->
+  <section class="controls">
+    <input type="text" id="searchInput" placeholder="Buscar receta...">
+    <select id="categoryFilter">
+      <option value="all">Todas las categorías</option>
+    </select>
+  </section>
+
+  <!-- MAIN CONTENT -->
+  <main id="recipesContainer" class="recipes-grid"></main>
 
   <!-- MODAL DETALLE -->
   <div id="recipeModal" class="modal hidden">
-    <div class="modal-box">
-      <button id="closeModal">✕</button>
-      <div id="modalContent"></div>
+    <div class="modal-content">
+      <button class="close-btn" id="closeModal">✖</button>
+      <div id="modalBody"></div>
     </div>
   </div>
 
-  <!-- SCRIPTS -->
+  <!-- FOOTER -->
+  <footer class="app-footer">
+    <p>© Recetario Premium · Producto Digital</p>
+  </footer>
+
+  <!-- DATA -->
   <script src="recipes.js"></script>
-  <script src="storage.js"></script>
+
+  <!-- APP -->
   <script src="app.js"></script>
 </body>
 </html>
