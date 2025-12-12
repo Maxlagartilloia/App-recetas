@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>Recetario Ecuatoriano Digital</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Aplicación digital de recetas tradicionales del Ecuador. Funciona offline." />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <header class="app-header">
+    <h1>🍲 Recetario Ecuatoriano</h1>
+    <p>Aplicación digital – funciona sin internet</p>
+
+    <input
+      type="search"
+      id="searchInput"
+      placeholder="Buscar receta..."
+      autocomplete="off"
+    />
+
+    <div id="categoryFilters" class="filters"></div>
+  </header>
+
+  <main>
+    <section id="recipesGrid" class="recipes-grid"></section>
+  </main>
+
+  <!-- MODAL DETALLE -->
+  <div id="recipeModal" class="modal hidden">
+    <div class="modal-box">
+      <button id="closeModal">✕</button>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="recipes.js"></script>
+  <script src="storage.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
