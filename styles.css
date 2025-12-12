@@ -1,68 +1,122 @@
+/* ==============================
+   VARIABLES + RESET
+================================ */
 :root {
-  --bg: #f6f6f6;
-  --card: #ffffff;
-  --accent: #2e7d32;
-  --text: #222;
+  --bg: #fafafa;
+  --bg-card: #ffffff;
+  --text: #1a1a1a;
+  --primary: #e53935;
+  --secondary: #ff7043;
+  --border: #e0e0e0;
 }
 
+body.dark {
+  --bg: #121212;
+  --bg-card: #1e1e1e;
+  --text: #f5f5f5;
+  --border: #333;
+}
+
+/* Reset básico */
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin: 0;
-  font-family: system-ui, sans-serif;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+/* ==============================
+   HEADER
+================================ */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background: var(--primary);
+  color: #fff;
+}
+
+.app-header h1 {
+  font-size: 1.2rem;
+}
+
+#themeToggle {
+  background: rgba(255,255,255,0.2);
+  border: none;
+  color: #fff;
+  font-size: 1.1rem;
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+/* ==============================
+   CONTROLS
+================================ */
+.controls {
+  display: flex;
+  gap: 10px;
+  padding: 16px;
+  flex-wrap: wrap;
+}
+
+.controls input,
+.controls select {
+  flex: 1;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
   color: var(--text);
 }
 
-.app-header {
-  background: var(--accent);
-  color: white;
-  padding: 1.2rem;
-  text-align: center;
-}
-
-.app-header input {
-  margin-top: 1rem;
-  width: 100%;
-  max-width: 420px;
-  padding: 0.7rem;
-  border-radius: 8px;
-  border: none;
-}
-
-.filters {
-  margin-top: 0.8rem;
-}
-
-.filters button {
-  margin: 0.2rem;
-  padding: 0.4rem 0.7rem;
-  border-radius: 6px;
-  border: none;
-  cursor: pointer;
-}
-
+/* ==============================
+   GRID DE RECETAS
+================================ */
 .recipes-grid {
-  padding: 1rem;
   display: grid;
-  gap: 1rem;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+  padding: 16px;
 }
 
+/* ==============================
+   CARD
+================================ */
 .recipe-card {
-  background: var(--card);
-  padding: 1rem;
-  border-radius: 12px;
+  background: var(--bg-card);
+  border-radius: 16px;
+  padding: 14px;
+  border: 1px solid var(--border);
   cursor: pointer;
-  transition: transform 0.2s;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .recipe-card:hover {
   transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 }
 
+.recipe-card h3 {
+  font-size: 1rem;
+  margin-bottom: 6px;
+}
+
+.recipe-card .category {
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+/* ==============================
+   MODAL
+================================ */
 .modal {
   position: fixed;
   inset: 0;
@@ -70,18 +124,72 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-
-.modal-box {
-  background: white;
-  padding: 1rem;
-  border-radius: 12px;
-  width: 90%;
-  max-width: 600px;
-  max-height: 90vh;
-  overflow-y: auto;
+  z-index: 1000;
 }
 
 .hidden {
   display: none;
+}
+
+.modal-content {
+  background: var(--bg-card);
+  max-width: 600px;
+  width: 90%;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 20px;
+  padding: 20px;
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  right: 16px;
+  top: 16px;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+  color: var(--text);
+}
+
+/* ==============================
+   MODAL CONTENT
+================================ */
+.modal-content h2 {
+  margin-bottom: 10px;
+}
+
+.modal-content h4 {
+  margin-top: 16px;
+  margin-bottom: 6px;
+}
+
+.modal-content ul,
+.modal-content ol {
+  margin-left: 20px;
+  margin-bottom: 10px;
+}
+
+.modal-content li {
+  margin-bottom: 6px;
+}
+
+/* ==============================
+   FOOTER
+================================ */
+.app-footer {
+  text-align: center;
+  padding: 16px;
+  font-size: 0.8rem;
+  opacity: 0.6;
+}
+
+/* ==============================
+   RESPONSIVE
+================================ */
+@media (min-width: 768px) {
+  .app-header h1 {
+    font-size: 1.5rem;
+  }
 }
